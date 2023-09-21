@@ -3,34 +3,21 @@ version: 0.2
 phases:
   install:
     runtime-versions:
-      java: corretto11  # Change to your desired Java version
+      java: corretto17  # Use the available Java 17 version (corretto17)
     commands:
-      - echo "Install phase"
-      # Add installation steps, if needed
+      - echo "Installing corretto(OpenJDK) version 17 ..."
+      - export JAVA_HOME="$JAVA_17_HOME"
+      - export JRE_HOME="$JRE_17_HOME"
+      - export JDK_HOME="$JDK_17_HOME"
+      - |
+        for tool_path in "$JAVA_HOME"/bin/*;
+        do
+          tool=`basename "$tool_path"`;
+          if [ $tool != 'java-rmi.cgi' ];
+          then
+            rm -f /usr/bin/$tool /var/lib/alternatives/$tool \
+              && update-alternatives --install /usr/bin/$tool $tool $tool_path 20000;
+          fi;
+        done
 
-  pre_build:
-    commands:
-      - echo "Pre-build phase"
-      # Add pre-build steps, if needed
-
-  build:
-    commands:
-      - echo "Build phase"
-      # Add build steps, e.g., compiling code, running tests, etc.
-
-  post_build:
-    commands:
-      - echo "Post-build phase"
-      # Add post-build steps, e.g., deploying artifacts, creating release packages, etc.
-
-artifacts:
-  files:
-    - '**/*'  # Include all files in the artifact
-  # Add additional artifact settings, if needed
-
-cache:
-  paths:
-    - '/root/.m2/**/*'  # Cache Maven dependencies, adjust as needed
-    # Add other cache paths, if needed
-
-
+# Add other phases (pre_build, build, post_build) and artifacts and cache sections as needed
