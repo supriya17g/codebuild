@@ -1,0 +1,36 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      java: corretto11  # Change to your desired Java version
+    commands:
+      - echo "Install phase"
+      # Add installation steps, if needed
+
+  pre_build:
+    commands:
+      - echo "Pre-build phase"
+      # Add pre-build steps, if needed
+
+  build:
+    commands:
+      - echo "Build phase"
+      # Add build steps, e.g., compiling code, running tests, etc.
+
+  post_build:
+    commands:
+      - echo "Post-build phase"
+      # Add post-build steps, e.g., deploying artifacts, creating release packages, etc.
+
+artifacts:
+  files:
+    - '**/*'  # Include all files in the artifact
+  # Add additional artifact settings, if needed
+
+cache:
+  paths:
+    - '/root/.m2/**/*'  # Cache Maven dependencies, adjust as needed
+    # Add other cache paths, if needed
+
+
