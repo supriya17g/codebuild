@@ -3,21 +3,48 @@ version: 0.2
 phases:
   install:
     runtime-versions:
-      java: corretto17  # Use the available Java 17 version (corretto17)
+      java: openjdk11  # Use OpenJDK 11
     commands:
-      - echo "Installing corretto(OpenJDK) version 17 ..."
-      - export JAVA_HOME="$JAVA_17_HOME"
-      - export JRE_HOME="$JRE_17_HOME"
-      - export JDK_HOME="$JDK_17_HOME"
-      - |
-        for tool_path in "$JAVA_HOME"/bin/*;
-        do
-          tool=`basename "$tool_path"`;
-          if [ $tool != 'java-rmi.cgi' ];
-          then
-            rm -f /usr/bin/$tool /var/lib/alternatives/$tool \
-              && update-alternatives --install /usr/bin/$tool $tool $tool_path 20000;
-          fi;
-        done
+      - echo "Installing OpenJDK 11 ..."
+      - apt-get update
+      - apt-get install -y openjdk-11-jdk
+      - export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
 
-# Add other phases (pre_build, build, post_build) and artifacts and cache sections as needed
+  pre_build:
+    commands:
+      - echo "Pre-build phase"
+      # Add pre-build steps, if needed
+
+  build:
+    commands:
+      - echo "Build phase"
+      - |
+        # Database connection details
+        DB_HOST=database-1.cluster-crot0ljdtzab.us-east-2.rds.amazonaws.com
+        DB_PORT=5432
+        DB_USER=postgres
+        DB_PASS=Postgres123
+
+        # Liquibase commands
+        liquibase --version  # Example Liquibase command
+        liquibase \
+          --url="jdbc:mysql://${DB_HOST}:${DB_PORT}/${DB_NAME}" \
+          --username="${DB_USER}" \
+          --password="${DB_PASS}" \
+          update
+      # Use environment variables for database connection details
+
+  post_build:
+    commands:
+      - echo "Post-build phase"
+      # Add post-build steps, if needed
+
+artifacts:
+  files:
+    - '**/*'  # Include all files in the artifact
+  # Add additional artifact settings, if needed
+
+cache:
+  paths:
+    - '/usr/lib/jvm/java-11-openjdk-amd64/**/*'  # Cache Java runtime
+    # Add other cache paths, if needed
