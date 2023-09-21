@@ -15,7 +15,7 @@ jobs:
 
       - name: Trigger AWS CodeBuild
         run: |
-          aws codebuild start-build --project-name YourCodeBuildProjectName
+          aws codebuild start-build --project-name test-code-build
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AKIAQK35MEZMFKWCZWIG }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.LDNrHXS+L2mtfYZaBeYFC8DT/jBOW1qEBwQaOk1f }}
