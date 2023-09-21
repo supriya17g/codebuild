@@ -1,0 +1,22 @@
+name: Trigger CodeBuild
+
+on:
+  push:
+    branches:
+      - codebuild  # Replace with the branch you want to trigger the build on
+
+jobs:
+  build:
+    runs-on: Amazon Linux 2
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Trigger AWS CodeBuild
+        run: |
+          aws codebuild start-build --project-name YourCodeBuildProjectName
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AKIAQK35MEZMFKWCZWIG }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.LDNrHXS+L2mtfYZaBeYFC8DT/jBOW1qEBwQaOk1f }}
+          AWS_DEFAULT_REGION: us-east-2  # Replace with your desired AWS region
