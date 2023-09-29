@@ -1,33 +1,24 @@
-name: Liquibase Database Deployment
+name: CI/CD with CodeBuild
 
 on:
   push:
     branches:
-      - codebuild  # Replace with the branch you want to trigger the build on
+      - main
 
 jobs:
-  liquibase-deploy:
-    runs-on: Amazon Linux 2
-
-    env:
-      AWS_ACCESS_KEY_ID: ${{ secrets.AKIAQK35MEZMFKWCZWIG }}
-      AWS_SECRET_ACCESS_KEY: ${{ secrets.LDNrHXS+L2mtfYZaBeYFC8DT/jBOW1qEBwQaOk1f }}
+  build:
+    runs-on: Amazon Linux
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Configure AWS CLI
-        run: |
-          echo "[default]" > ~/.aws/config
-          echo "region = us-east-2" >> ~/.aws/config
-          echo "output = json" >> ~/.aws/config
-          aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
-          aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
+      # Add your build and test steps here
 
-      - name: Trigger AWS CodeBuild
+      - name: Deploy to AWS CodeBuild
         run: |
-          aws codebuild start-build --project-name YourCodeBuildProjectName
-          # Optionally, you can add more commands or environment variables here
-
-      # Add more steps as needed for your specific deployment process
+          aws codebuild start-build --project test
+        env:
+          AWS_DEFAULT_REGION: us-east-2
+          AWS_ACCESS_KEY_ID: ${{ secrets.AKIA3WPZ424TOBRECH5V }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.kKypLAuLGekY0gnsrCAI/12FAMdknx3l6CJfqy1L }}
