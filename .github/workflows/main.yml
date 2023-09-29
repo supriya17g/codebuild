@@ -17,7 +17,7 @@ jobs:
 
       - name: Deploy to AWS CodeBuild
         run: |
-          aws codebuild start-build --project test
+          aws codebuild start-build --project test-project
         env:
           AWS_DEFAULT_REGION: us-east-2
           AWS_ACCESS_KEY_ID: ${{ secrets.AKIA3WPZ424TOBRECH5V }}
